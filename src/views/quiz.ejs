@@ -1,0 +1,48 @@
+<%- include('./layouts/header.ejs')%> <%
+if(user){ %>
+<section class="vh-100" style="background-color: #f4f5f7">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-6 mb-4 mb-lg-0">
+        <div class="card mb-3" style="border-radius: 0.5rem">
+          <div class="row g-0">
+            <div class="col-md-16">
+              <div class="card-body p-4">
+                <div class="row pt-3 text-center">
+                  <div class="col-3 mb-3 mr-5">
+                    <h6>Question</h6>
+                  </div>
+                </div>
+                <hr class="mt-0 mb-4" />
+                <div class="row pt-2 text-center">
+                  <% for (let i = 0; i < equation.length; i++) { %>
+                  <div class="col-1 mb-3">
+                    <h6><%=equation.charAt(i)%></h6>
+                  </div>
+                  <% } %>
+                </div>
+                <form action="/quiz" method="post">
+                <div class="row pt-2">
+                  <% for (let i = 0; i < answerOptions.length; i++) { %>
+                  <div class="ans col-3 mb-4">
+                    <label class="radio"> <input type="radio" name="ans" value="<%=answerOptions[i]%>"> <span><%=answerOptions[i]%></span>
+                    </label>    
+                  </div>
+                  <% } %>
+                </div>
+                <hr class="mt-0 mb-4" />
+                <div class="row pt-1">
+                  <button type="submit" class="btn btn-primary btn-block mb-3">
+                    Next
+                  </button>
+                </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<% }%> <%- include('./layouts/footer.ejs')%>
