@@ -1,5 +1,5 @@
-// const AppService = require("../services/user.service");
 const userModel = require("../models/user.model");
+const gameModel = require("../models/game.model");
 const errorMessage = require("../messages/errorMessage").errorMessage;
 const Joi = require("joi");
 
@@ -61,7 +61,7 @@ exports.postSignup = async (req, res, next) => {
       req.session.accessToken = user.generateJwt();
       return res.redirect("/home");
     } catch (error) {
-      res.status(400).json(errorMessage(error, null, null));
+      res.status(400).json(errorMessage.errorMessage(error, null, null));
     }
   }
 };
@@ -103,12 +103,19 @@ exports.postLogin = async (req, res, next) => {
     req.session.accessToken = user.generateJwt();
     return res.redirect("/home");
   } catch (error) {
-    res.status(400).json(errorMessage(error, null, null));
+    res.status(400).json(errorMessage.errorMessage(error, null, null));
   }
 };
 
 exports.getHome = async (req, res) => {
-  const userData = res.locals.user;
+  const userData = res.locals.user
+  const gameExist = await gameModel.findOne({ user: userData.id });
+  if (gameExist) {
+    try {const deletedDocument = await gameModel.findOneAndDelete({
+      user: userData.id,
+    });} catch (error) {
+      res.status(400).json(errorMessage.errorMessage(error, null, null));
+    }}
   userData.birthDate = userData.birthDate.substring(0, 10);
   res.render("home", { pageTitle: "Home", user: userData });
 };
@@ -117,7 +124,7 @@ exports.getHome = async (req, res) => {
 exports.logout = (req, res, next) => {
   req.session.destroy((err) => {
     if (err) {
-      res.status(400).json(errorMessage(err, null, null));
+      res.status(400).json(errorMessage.errorMessage(error, null, null));
     }
     req.session = null;
     res.clearCookie("connect.sid");

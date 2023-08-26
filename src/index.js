@@ -86,9 +86,11 @@ db.once("open", () => {
 
 //Routes
 const userRoutes = require("./routes/user.routes");
+const gameRoutes = require("./routes/game.routes")
 const middleware = require("./middlewares/auth");
 app.use("*", middleware.checkUser);
 app.use("/", userRoutes);
+app.use("/",gameRoutes)
 
 //Server Listening
 app.listen(config.PORT, () => {

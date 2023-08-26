@@ -13,10 +13,6 @@ const userSchema = new Schema(
       require: [true, "Please add a name"],
       maxlength: 32,
     },
-    // imageUrl: {
-    //   type: String,
-    //   require: true,
-    // },
     email: {
       type: String,
       trim: true,

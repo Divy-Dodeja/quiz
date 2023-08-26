@@ -1,0 +1,49 @@
+<%- include('./layouts/header.ejs')%> <%
+if(user){ %>
+    <section class="vh-100" style="background-color: #f4f5f7">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-lg-8 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title mb-4">Results</h4>
+                    <p>Overall Score: <%= overallScore %>/10 </p>
+                    <div class="table-responsive mb-3">
+                      <table class="table">
+                        <thead class="text-center">
+                          <tr>
+                            <th>Question</th>
+                            <th>Correct Answer</th>
+                            <th>Marked Answer</th>
+                            <th>Result</th>
+                          </tr>
+                        </thead>
+                        <tbody class="text-center">
+                          <% for(let i=0;i<results.length;i++){ %>
+                          <tr>
+                            <td><%= results[i].equation %></td>
+                            <td><%= results[i].correctAnswer %></td>
+                            <td><%= results[i].selectedAnswer %></td>
+                            <% if(results[i].isCorrect == true){ %>
+                            <td><span style="color: green;">Correct</span><td>
+                              <% } %>
+                              <% if(results[i].isCorrect == false){ %>
+                                <td><span style="color: red;">Wrong</span><td>
+                                  <% } %>
+                          </tr>
+                          <% } %>
+                        </tbody>
+                      </table>
+                      </div>
+                      <div class=" mb-3 text-center">
+                        <a class="btn btn-primary" href="/home" role="button"
+                          >Home</a
+                        >
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </section>
+    <% }%> <%- include('./layouts/footer.ejs')%>

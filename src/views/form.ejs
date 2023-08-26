@@ -4,6 +4,19 @@
   <h1 class="<%= pageTitle === 'Login'? 'mb-5' : 'mb-4' %>">
     <%= pageTitle === 'Register'? 'Register' : 'Login' %>
   </h1>
+ 
+  <div class="col-6 mb-3">
+    <% if(pageTitle=='Login'){ %>
+    <a class="btn btn-secondary" href="/register" 
+      >Register?</a
+    >
+    <%}%>
+    <% if(pageTitle=='Register'){ %>
+      <a class="btn btn-secondary" href="/login" 
+        >Already a member?</a
+      >
+      <%}%>
+  </div>
 
   <% if(typeof(alert) != 'undefined') { %> <% alert.forEach(function(error){ %>
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -40,19 +53,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Image input -->
-    <!-- <div class="form-outline mb-3">
-      <input
-        type="file"
-        name="profileImage"
-        class="form-control"
-        id="customFile"
-      />
-      <label class="form-label" for="profileImage"
-        >Upload Profile Picture</label
-      >
-    </div> -->
     <% } %>
 
     <!-- Email input -->
