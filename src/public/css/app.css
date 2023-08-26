@@ -1,0 +1,32 @@
+.navbar-custom {
+  display: flex;
+  justify-content: space-between;
+}
+
+h1 {
+  text-align: center;
+}
+
+.navbar-brand {
+  font-weight: bold;
+}
+
+.user {
+  font-style: italic;
+}
+
+.nav-container {
+  background-color: #e4dccf;
+  padding: 1rem 3rem;
+}
+
+.file-container {
+  align-items: center;
+  justify-content: center;
+  margin: 4rem;
+}
+
+.file-btn {
+  margin-top: 2rem;
+}
+

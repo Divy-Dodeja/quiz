@@ -1,0 +1,112 @@
+<%- include('./layouts/header.ejs')%>
+<br>
+<div class="container">
+  <h1 class="<%= pageTitle === 'Login'? 'mb-5' : 'mb-4' %>">
+    <%= pageTitle === 'Register'? 'Register' : 'Login' %>
+  </h1>
+
+  <% if(typeof(alert) != 'undefined') { %> <% alert.forEach(function(error){ %>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <%= error%>
+  </div>
+  <% }) %> <% } %>
+
+  <form
+    action="<%= pageTitle === 'Register'? '/register' : '/login' %>"
+    method="post"
+  >
+    <% if(pageTitle === "Register"){%>
+    <div class="row mb-3">
+      <div class="col">
+        <div class="form-outline">
+          <input
+            type="text"
+            name="firstName"
+            id="form3Example1"
+            class="form-control"
+          />
+          <label class="form-label" for="firstName">First name</label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-outline">
+          <input
+            type="text"
+            name="lastName"
+            id="form3Example2"
+            class="form-control"
+          />
+          <label class="form-label" for="lastName">Last name</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image input -->
+    <!-- <div class="form-outline mb-3">
+      <input
+        type="file"
+        name="profileImage"
+        class="form-control"
+        id="customFile"
+      />
+      <label class="form-label" for="profileImage"
+        >Upload Profile Picture</label
+      >
+    </div> -->
+    <% } %>
+
+    <!-- Email input -->
+    <div class="form-outline mb-3">
+      <input
+        type="email"
+        name="email"
+        id="form3Example3"
+        class="form-control"
+      />
+      <label class="form-label" for="email">Email address</label>
+    </div>
+
+    <% if(pageTitle === "Register"){%>
+    <!-- Birthdate input -->
+    <div class="form-outline mb-3">
+      <input
+        type="date"
+        name="birthDate"
+        id="form3Example3"
+        class="form-control"
+      />
+      <label class="form-label" for="birthDate">Birth Date</label>
+    </div>
+
+    <!-- Phone Number input -->
+    <div class="form-outline mb-3">
+      <input
+        type="tel"
+        id="form3Example3"
+        class="form-control"
+        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+        placeholder="123-456-6789"
+        name="phoneNumber"
+      />
+      <label class="form-label" for="phoneNumber">Phone Number</label>
+    </div>
+    <% } %>
+
+    <!-- Password input -->
+    <div class="form-outline mb-4">
+      <input
+        type="password"
+        name="password"
+        id="form3Example4"
+        class="form-control"
+      />
+      <label class="form-label" for="password">Password</label>
+    </div>
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary btn-block mb-3">
+      Sign up
+    </button>
+  </form>
+</div>
+<%- include('./layouts/footer.ejs')%>
