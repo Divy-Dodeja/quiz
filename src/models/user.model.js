@@ -2,8 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Schema = mongoose.Schema;
-
-const SECRET_KEY = "secret";
+const config = require('../config/config')
 
 //Creating user schema in database
 const userSchema = new Schema(
@@ -72,7 +71,7 @@ userSchema.methods.generateJwt = function () {
       birthDate: this.birthDate,
       phoneNumber: this.phoneNumber,
     },
-    SECRET_KEY
+    config.SECRET_KEY
   );
 };
 

@@ -9,12 +9,7 @@ const session = require("express-session");
 const mongoDbStore = require("connect-mongodb-session")(session);
 const path = require("path");
 const multer = require("multer");
-// const config = require("./config/config");
-
-const PORT = 3000;
-const MONGODB_URL =
-  "mongodb+srv://divydodeja:divy0101@quiz.yyxtuov.mongodb.net/";
-const SECRET_KEY = "secret";
+const config = require("./config/config");
 
 //Setting up express
 app.use(cors());
@@ -24,7 +19,7 @@ app.use(helmet());
 
 //Storing session in database
 const store = new mongoDbStore({
-  uri: MONGODB_URL,
+  uri: config.MONGODB_URL,
   collection: "sessions",
 });
 
@@ -71,7 +66,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   session({
-    secret: SECRET_KEY,
+    secret: config.SECRET_KEY,
     resave: "false",
     saveUninitialized: false,
     store: store,
@@ -79,7 +74,7 @@ app.use(
 );
 
 //Setting up Mongoose
-mongoose.connect(MONGODB_URL, {
+mongoose.connect(config.MONGODB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -96,8 +91,8 @@ app.use("*", middleware.checkUser);
 app.use("/", userRoutes);
 
 //Server Listening
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+app.listen(config.PORT, () => {
+  console.log(`Server started on port ${config.PORT}`);
 });
 
 //Export Server
