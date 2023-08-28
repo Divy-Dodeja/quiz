@@ -4,18 +4,13 @@
   <h1 class="<%= pageTitle === 'Login'? 'mb-5' : 'mb-4' %>">
     <%= pageTitle === 'Register'? 'Register' : 'Login' %>
   </h1>
- 
+
   <div class="col-6 mb-3">
     <% if(pageTitle=='Login'){ %>
-    <a class="btn btn-secondary" href="/register" 
-      >Register?</a
-    >
+    <a class="btn btn-secondary" href="/register">Register?</a>
+    <%}%> <% if(pageTitle=='Register'){ %>
+    <a class="btn btn-secondary" href="/login">Already a member?</a>
     <%}%>
-    <% if(pageTitle=='Register'){ %>
-      <a class="btn btn-secondary" href="/login" 
-        >Already a member?</a
-      >
-      <%}%>
   </div>
 
   <% if(typeof(alert) != 'undefined') { %> <% alert.forEach(function(error){ %>
@@ -27,6 +22,9 @@
   <form
     action="<%= pageTitle === 'Register'? '/register' : '/login' %>"
     method="post"
+    <% if(pageTitle === "Register"){%>
+    enctype="multipart/form-data"
+    <% } %>
   >
     <% if(pageTitle === "Register"){%>
     <div class="row mb-3">
@@ -53,6 +51,13 @@
         </div>
       </div>
     </div>
+    <div class="form-outline mb-3">
+      <input type="file" class="form-control" id="customFile" name="profileImage" required/>
+      <label class="form-label" for="profileImage"
+        >Upload Image</label
+      >
+    </div>
+
     <% } %>
 
     <!-- Email input -->
@@ -104,9 +109,15 @@
     </div>
 
     <!-- Submit button -->
+    <% if(pageTitle == "Register"){ %>
     <button type="submit" class="btn btn-primary btn-block mb-3">
       Sign up
     </button>
+    <% }else{%>
+      <button type="submit" class="btn btn-primary btn-block mb-3">
+        Login
+      </button>
+      <%}%>
   </form>
 </div>
 <%- include('./layouts/footer.ejs')%>

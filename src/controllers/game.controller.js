@@ -31,7 +31,7 @@ exports.getQuiz = async (req, res, next) => {
     }
   } else {
     questionsArraySize = gameExist.questions.length;
-    }
+  }
   if (questionsArraySize >= 10) {
     res.redirect("/results");
   }
@@ -69,7 +69,12 @@ exports.getQuiz = async (req, res, next) => {
 
 exports.postQuiz = async (req, res, next) => {
   const userData = res.locals.user;
-  storing.selectedAnswer = parseInt(req.body.ans);
+  if (req.body.ans) {
+    storing.selectedAnswer = parseInt(req.body.ans);
+  }
+  else{
+    storing.selectedAnswer = 100;
+  }
   storing.isCorrect = storing.selectedAnswer === storing.correctAnswer ? 1 : 0;
   try {
     const fetchedDocument = await gameModel.findOne({ user: userData.id });
@@ -92,16 +97,15 @@ exports.getResults = async (req, res, next) => {
   try {
     const gameData = await gameModel.findOne({ user: userData.id });
     let overallScore = 0;
-    const questions = gameData.questions
-    for(let i =0;i<questions.length;i++){
-      if(questions[i].isCorrect==true)
-      overallScore++;
+    const questions = gameData.questions;
+    for (let i = 0; i < questions.length; i++) {
+      if (questions[i].isCorrect == true) overallScore++;
     }
 
     res.render("result", {
       pageTitle: "Results",
       results: gameData.questions,
-      overallScore: overallScore
+      overallScore: overallScore,
     });
   } catch (error) {
     res.status(400).json(errorMessage.errorMessage(error, null, null));

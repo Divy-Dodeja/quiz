@@ -23,12 +23,20 @@ if(user){ %>
                           <tr>
                             <td><%= results[i].equation %></td>
                             <td><%= results[i].correctAnswer %></td>
+                            <% if(results[i].selectedAnswer == 100){ %>
+                              <td>none</td>
+                              <% } else {%>  
                             <td><%= results[i].selectedAnswer %></td>
+                            <%}%>
                             <% if(results[i].isCorrect == true){ %>
                             <td><span style="color: green;">Correct</span><td>
                               <% } %>
                               <% if(results[i].isCorrect == false){ %>
-                                <td><span style="color: red;">Wrong</span><td>
+                                <% if(results[i].selectedAnswer == 100){ %>
+                                  <td><span style="color: red;">Not Answered</span><td>
+                                  <% } else {%>  
+                                    <td><span style="color: red;">Wrong</span><td>
+                                <%}%>
                                   <% } %>
                           </tr>
                           <% } %>

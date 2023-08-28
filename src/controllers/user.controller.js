@@ -1,6 +1,6 @@
 const userModel = require("../models/user.model");
 const gameModel = require("../models/game.model");
-const errorMessage = require("../messages/errorMessage").errorMessage;
+const errorMessage = require("../messages/errorMessage");
 const Joi = require("joi");
 
 //Joi validation schema
@@ -19,7 +19,6 @@ const userSchema = Joi.object({
     .pattern(/^\d{3}-\d{3}-\d{4}$/)
     .required(),
   password: Joi.string().min(8).required(),
-  // profileImage: Joi.any().meta({ swaggerType: "file" }).required(),
 });
 
 //Register a user
@@ -32,10 +31,8 @@ exports.getSignup = async (req, res) => {
 
 exports.postSignup = async (req, res, next) => {
   const { error } = userSchema.validate(req.body, { abortEarly: false });
-  // const image = req.file;
   if (error) {
     const alert = error.details.map((detail) => detail.message);
-    console.log(alert);
     return res.render("form", { pageTitle: "Register", alert: alert });
   } else {
     const email = req.body.email;
@@ -51,7 +48,7 @@ exports.postSignup = async (req, res, next) => {
     try {
       const user = await userModel.create({
         name: req.body.firstName + " " + req.body.lastName,
-        // imageUrl: image.path,
+        profileImage: req.file.path,
         email: req.body.email,
         birthDate: new Date(req.body.birthDate),
         phoneNumber: req.body.phoneNumber,
@@ -108,16 +105,25 @@ exports.postLogin = async (req, res, next) => {
 };
 
 exports.getHome = async (req, res) => {
-  const userData = res.locals.user
-  const gameExist = await gameModel.findOne({ user: userData.id });
-  if (gameExist) {
-    try {const deletedDocument = await gameModel.findOneAndDelete({
-      user: userData.id,
-    });} catch (error) {
-      res.status(400).json(errorMessage.errorMessage(error, null, null));
-    }}
-  userData.birthDate = userData.birthDate.substring(0, 10);
-  res.render("home", { pageTitle: "Home", user: userData });
+  const userData = res.locals.user;
+  try {
+    const user = await userModel.findOne({ email: userData.email });
+    const profileImage = user.profileImage.replace(/\\/g,'/');
+    const gameExist = await gameModel.findOne({ user: userData.id });
+    if (gameExist) {
+      const deletedDocument = await gameModel.findOneAndDelete({
+        user: userData.id,
+      });
+    }
+    userData.birthDate = userData.birthDate.substring(0, 10);
+    res.render("home", {
+      pageTitle: "Home",
+      user: userData,
+      profileImage: user.profileImage,
+    });
+  } catch (error) {
+    res.status(400).json(errorMessage.errorMessage(error, null, null));
+  }
 };
 
 //logout
