@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Schema = mongoose.Schema;
-const config = require('../config/config')
+const config = require("../config/config");
 
 //Creating user schema in database
 const userSchema = new Schema(
@@ -12,6 +12,10 @@ const userSchema = new Schema(
       trim: true,
       require: [true, "Please add a name"],
       maxlength: 32,
+    },
+    profileImage: {
+      type: String,
+      require: [true, "Please add a profile image"],
     },
     email: {
       type: String,
@@ -35,7 +39,7 @@ const userSchema = new Schema(
       require: [true, "Please add a Password"],
       minlength: [8],
     },
-    gameResults: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game' }]
+    gameResults: [{ type: mongoose.Schema.Types.ObjectId, ref: "Game" }],
   },
   {
     collection: "user",

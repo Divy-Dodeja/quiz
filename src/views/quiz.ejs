@@ -12,6 +12,12 @@ if(user){ %>
                   <div class="col-3 mb-3 mr-5">
                     <h6>Question</h6>
                   </div>
+                  <div class="col-5 mb-3 mr-5">
+                    <h6></h6>
+                  </div>
+                  <div class="col-4 mb-3 mr-5">
+                    <h6>Timer: <b id="timer">30</b></h6>
+                  </div>
                 </div>
                 <hr class="mt-0 mb-4" />
                 <div class="row pt-2 text-center">
@@ -21,11 +27,11 @@ if(user){ %>
                   </div>
                   <% } %>
                 </div>
-                <form action="/quiz" method="post">
+                <form action="/quiz" method="post" id="quiz-form">
                 <div class="row pt-2">
                   <% for (let i = 0; i < answerOptions.length; i++) { %>
                   <div class="ans col-3 mb-4">
-                    <label class="radio"> <input type="radio" name="ans" value="<%=answerOptions[i]%>"> <span><%=answerOptions[i]%></span>
+                    <label class="radio"> <input class="answers" type="radio" name="ans" value="<%=answerOptions[i]%>"> <span><%=answerOptions[i]%></span>
                     </label>    
                   </div>
                   <% } %>
@@ -45,4 +51,32 @@ if(user){ %>
     </div>
   </div>
 </section>
-<% }%> <%- include('./layouts/footer.ejs')%>
+<% }%>
+<br>
+<script>
+    // Timer function
+    function startTimer(duration, display) {
+    let timer = duration;
+    const countdown = setInterval(function () {
+      display.textContent = timer;
+      timer--;
+
+      if (timer < 0) {
+        clearInterval(countdown);
+        // submit the form
+        document.querySelector('#quiz-form').submit();
+      }
+    }, 1000);
+  }
+
+// The total time for each question in seconds (30 seconds)
+const questionTime = 30;
+  
+// Start the timer on page load
+document.addEventListener('DOMContentLoaded', function () {
+    const display = document.querySelector('#timer');
+    startTimer(questionTime, display);
+  });
+</script>
+</body>
+</html>

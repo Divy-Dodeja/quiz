@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-const errorMessage = require("../messages/errorMessage").errorMessage;
-const config = require("../config/config")
+const errorMessage = require("../messages/errorMessage");
+const config = require("../config/config");
 
 // verifying jwt (getting current user)
 exports.checkUser = (req, res, next) => {
@@ -8,7 +8,7 @@ exports.checkUser = (req, res, next) => {
   if (accessToken) {
     jwt.verify(accessToken, config.SECRET_KEY, async (err, decodedToken) => {
       if (err) {
-        console.log(err);
+        res.status(400).json(errorMessage.errorMessage(error, null, null));
         res.locals.user = null;
         next();
       } else {
@@ -17,7 +17,5 @@ exports.checkUser = (req, res, next) => {
       }
     });
   } else {
-    res.locals.user = null;
-    next();
-  }
-};
+    res.redirect('/register')
+};}

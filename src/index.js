@@ -8,53 +8,19 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const mongoDbStore = require("connect-mongodb-session")(session);
 const path = require("path");
-const multer = require("multer");
 const config = require("./config/config");
 
 //Setting up express
-app.use(cors());
+app.use(cors({origin: '*'}));
 
 //Implementing helmet to secure express server
-app.use(helmet());
+app.use(helmet({contentSecurityPolicy: false}));
 
 //Storing session in database
 const store = new mongoDbStore({
   uri: config.MONGODB_URL,
   collection: "sessions",
 });
-
-//Setting disk storage
-const storage = multer.diskStorage({
-  destination: ".src/public/uploads",
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
-  },
-});
-
-//Initialising multer
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1000000 },
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb);
-  },
-}).single("profileImage");
-
-//Check file type
-function checkFileType(file, cb) {
-  const fileType = /jpeg|jpg|png/;
-  const extName = fileType.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = fileType.test(file.mimetype);
-
-  if (mimetype && extName) {
-    return cb(null, true);
-  } else {
-    cb("File not Supported");
-  }
-}
 
 // setting view engine
 app.set("views", path.join(__dirname, "views"));
@@ -86,11 +52,9 @@ db.once("open", () => {
 
 //Routes
 const userRoutes = require("./routes/user.routes");
-const gameRoutes = require("./routes/game.routes")
-const middleware = require("./middlewares/auth");
-app.use("*", middleware.checkUser);
+const gameRoutes = require("./routes/game.routes");
 app.use("/", userRoutes);
-app.use("/",gameRoutes)
+app.use("/", gameRoutes);
 
 //Server Listening
 app.listen(config.PORT, () => {
